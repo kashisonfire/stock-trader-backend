@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31729.503
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockTrader.API", "StockTrader.API\StockTrader.API.csproj", "{B815D59A-DC60-4C57-B1DF-C0637985786C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StockTrader.API", "StockTrader.API\StockTrader.API.csproj", "{B815D59A-DC60-4C57-B1DF-C0637985786C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockTrader.Logger", "StockTrader.Logger\StockTrader.Logger.csproj", "{A7D79252-7768-43F4-B179-8DA9B05447FB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StockTrader.Logger", "StockTrader.Logger\StockTrader.Logger.csproj", "{A7D79252-7768-43F4-B179-8DA9B05447FB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockTrader.Domain", "StockTrader.Domain\StockTrader.Domain.csproj", "{67AF8EC9-DCE4-4800-9ABC-BEF8F65E5F89}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StockTrader.Domain", "StockTrader.Domain\StockTrader.Domain.csproj", "{67AF8EC9-DCE4-4800-9ABC-BEF8F65E5F89}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockTrader.EntityFramework", "StockTrader.EntityFramework\StockTrader.EntityFramework.csproj", "{55BF28EF-E4AD-48CC-A827-5FC49CB33DF0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StockTrader.EntityFramework", "StockTrader.EntityFramework\StockTrader.EntityFramework.csproj", "{55BF28EF-E4AD-48CC-A827-5FC49CB33DF0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockTrader.Utilities", "StockTrader.Utilities\StockTrader.Utilities.csproj", "{CB60FB03-1281-46F8-902E-3B401BFC25D4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{55BF28EF-E4AD-48CC-A827-5FC49CB33DF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{55BF28EF-E4AD-48CC-A827-5FC49CB33DF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{55BF28EF-E4AD-48CC-A827-5FC49CB33DF0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CB60FB03-1281-46F8-902E-3B401BFC25D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CB60FB03-1281-46F8-902E-3B401BFC25D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CB60FB03-1281-46F8-902E-3B401BFC25D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CB60FB03-1281-46F8-902E-3B401BFC25D4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

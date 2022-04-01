@@ -5,10 +5,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using StockTrader.API.Auth;
 using StockTrader.Domain.Models;
+using StockTrader.Domain.Services;
 using StockTrader.EntityFramework;
+using StockTrader.EntityFramework.Services;
+using StockTrader.Logger;
+using StockTrader.Utilities.PasswordHasher;
 using System;
-using System.Configuration;
 
 namespace StockTrader.API
 {
@@ -21,14 +25,21 @@ namespace StockTrader.API
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        /// <summary>
+        /// This method gets called by the runtime. Use this method to add services to the container.
+        /// </summary>
+        /// <param name="services">Container</param>
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            // Get provider name and construct db connection
+            IConfigurationRoot configuration = new ConfigurationBuilder()
+                .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+                .AddJsonFile("appsettings.json")
+                .Build();
 
-            string providerNameString = ConfigurationManager.AppSettings[nameof(ProviderName)] ?? "";
+            string providerNameString = configuration.GetConnectionString(nameof(ProviderName));
             ProviderName providerName = (ProviderName)Enum.Parse(typeof(ProviderName), providerNameString);
-            string connectionString = ConfigurationManager.ConnectionStrings[providerName.ToString()].ConnectionString;
+            string connectionString = configuration.GetConnectionString(providerNameString + "ConnectionString");
 
             // Options builder based on provider
             Action<DbContextOptionsBuilder> configureDbContext = providerName switch
@@ -47,7 +58,18 @@ namespace StockTrader.API
 
             // Context factory for database services
             services.AddDbContext<StockTraderDbContext>(configureDbContext);
-            services.AddDbContextFactory<StockTraderDbContext, StockTraderDbContextFactory>(configureDbContext);
+            services.AddSingleton(new StockTraderDbContextFactory(configureDbContext));
+
+            // Add db services
+            services.AddSingleton(typeof(IDataService<>), typeof(GenericDataService<>));
+            services.AddSingleton<IAuthenticationService, AuthenticationService>();
+
+            // Authentication
+            services.AddSingleton<IPasswordHasher, PasswordHasher>();
+            services.AddSingleton<ILogger, Logger.Logger>();
+            services.AddSingleton<IAuthenticator, Authenticator>();
+
+            services.AddControllers();
 
             services.AddSwaggerGen(c =>
             {
@@ -65,11 +87,15 @@ namespace StockTrader.API
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "StockTrader.API v1"));
             }
 
+            // migrate database if needed
             StockTraderDbContextFactory contextFactory = app.ApplicationServices.GetRequiredService<StockTraderDbContextFactory>();
             using (StockTraderDbContext context = contextFactory.CreateDbContext())
             {
                 context.Database.Migrate();
             }
+
+            // configure logger
+            app.ApplicationServices.GetRequiredService<ILogger>().Configure();
 
             app.UseHttpsRedirection();
 
