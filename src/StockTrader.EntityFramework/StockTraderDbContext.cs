@@ -12,6 +12,12 @@ namespace StockTrader.EntityFramework
 
         public DbSet<Log> Logs { get; set; }
 
+        public DbSet<User> Users { get; set; }
+
+        public DbSet<Account> Accounts { get; set; }
+
+        public DbSet<AssetTransaction> AssetTransactions { get; set; }
+
         #endregion Sets
 
         /// <summary>
@@ -20,6 +26,16 @@ namespace StockTrader.EntityFramework
         /// <param name="options">Connection</param>
         public StockTraderDbContext(DbContextOptions options) : base(options)
         {
+        }
+
+        /// <summary>
+        /// Build relations on models
+        /// </summary>
+        /// <param name="modelBuilder">base builder</param>
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<AssetTransaction>().OwnsOne(a => a.Asset);
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

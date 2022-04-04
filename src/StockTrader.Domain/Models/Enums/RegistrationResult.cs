@@ -1,4 +1,4 @@
-﻿namespace StockTrader.Domain.Services
+﻿namespace StockTrader.Domain.Models
 {
     public enum RegistrationResult
     {

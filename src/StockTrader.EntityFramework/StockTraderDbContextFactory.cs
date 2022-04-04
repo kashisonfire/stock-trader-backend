@@ -1,24 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
+using Microsoft.EntityFrameworkCore.Design;
 
 namespace StockTrader.EntityFramework
 {
-    public class StockTraderDbContextFactory : IDbContextFactory<StockTraderDbContext>
+    public class StockTraderDbContextFactory : IDesignTimeDbContextFactory<StockTraderDbContext>
     {
-        private readonly Action<DbContextOptionsBuilder> _configureDbContext;
-
-        public StockTraderDbContextFactory(Action<DbContextOptionsBuilder> configureDbContext)
+        public StockTraderDbContext CreateDbContext(string[] args)
         {
-            _configureDbContext = configureDbContext;
-        }
+            var optionsBuilder = new DbContextOptionsBuilder<StockTraderDbContext>();
 
-        public StockTraderDbContext CreateDbContext()
-        {
-            DbContextOptionsBuilder<StockTraderDbContext> options = new();
+            optionsBuilder.UseNpgsql("Host=localhost;Database=StockTrader;User ID=postgres;Password=admin;");
 
-            _configureDbContext(options);
-
-            return new StockTraderDbContext(options.Options);
+            return new StockTraderDbContext(optionsBuilder.Options);
         }
     }
 }

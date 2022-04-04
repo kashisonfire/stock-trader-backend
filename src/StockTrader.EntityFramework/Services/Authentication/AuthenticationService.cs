@@ -1,11 +1,13 @@
 ﻿using StockTrader.Domain.Exceptions;
 using StockTrader.Domain.Models;
+using StockTrader.Domain.Services;
+using StockTrader.Domain.Services.Authentication;
 using StockTrader.Utilities.PasswordHasher;
 using System;
 using System.Security;
 using System.Threading.Tasks;
 
-namespace StockTrader.Domain.Services
+namespace StockTrader.EntityFramework.Services.Authentication
 {
     /// <summary>
     /// Authentication service used to login or register users

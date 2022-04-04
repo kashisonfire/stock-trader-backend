@@ -2,9 +2,19 @@
 
 namespace StockTrader.Domain.Exceptions
 {
-    internal class InvalidPasswordException : Exception
+    /// <summary>
+    /// Occurs when a user has invalid username or password
+    /// </summary>
+    public class InvalidPasswordException : Exception
     {
+        /// <summary>
+        /// User's username
+        /// </summary>
         public string Username { get; set; }
+
+        /// <summary>
+        /// User's password
+        /// </summary>
         public string Password { get; set; }
 
         public InvalidPasswordException(string username, string password)

@@ -57,8 +57,7 @@ namespace StockTrader.API
             };
 
             // Context factory for database services
-            services.AddDbContext<StockTraderDbContext>(configureDbContext);
-            services.AddSingleton(new StockTraderDbContextFactory(configureDbContext));
+            services.AddDbContextFactory<StockTraderDbContext>(configureDbContext);
 
             // Add db services
             services.AddSingleton(typeof(IDataService<>), typeof(GenericDataService<>));
@@ -88,7 +87,7 @@ namespace StockTrader.API
             }
 
             // migrate database if needed
-            StockTraderDbContextFactory contextFactory = app.ApplicationServices.GetRequiredService<StockTraderDbContextFactory>();
+            IDbContextFactory<StockTraderDbContext> contextFactory = app.ApplicationServices.GetRequiredService<IDbContextFactory<StockTraderDbContext>>();
             using (StockTraderDbContext context = contextFactory.CreateDbContext())
             {
                 context.Database.Migrate();

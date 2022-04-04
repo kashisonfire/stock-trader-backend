@@ -2,8 +2,14 @@
 
 namespace StockTrader.Domain.Exceptions
 {
-    internal class UserNotFoundException : Exception
+    /// <summary>
+    /// Occurs when a username is not found in the database
+    /// </summary>
+    public class UserNotFoundException : Exception
     {
+        /// <summary>
+        /// Username of the account
+        /// </summary>
         public string Username { get; set; }
 
         public UserNotFoundException(string username)

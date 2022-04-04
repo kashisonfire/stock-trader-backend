@@ -3,7 +3,7 @@ using System;
 using System.Security;
 using System.Threading.Tasks;
 
-namespace StockTrader.Domain.Services
+namespace StockTrader.Domain.Services.Authentication
 {
     public interface IAuthenticationService
     {

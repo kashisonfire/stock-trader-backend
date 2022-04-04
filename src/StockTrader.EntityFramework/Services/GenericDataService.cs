@@ -20,13 +20,13 @@ namespace StockTrader.EntityFramework.Services
         /// <summary>
         /// Context factory for DI
         /// </summary>
-        private readonly StockTraderDbContextFactory _contextFactory;
+        private readonly IDbContextFactory<StockTraderDbContext> _contextFactory;
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="contextFactory">Context factory used</param>
-        public GenericDataService(StockTraderDbContextFactory contextFactory)
+        public GenericDataService(IDbContextFactory<StockTraderDbContext> contextFactory)
         {
             _contextFactory = contextFactory;
         }
