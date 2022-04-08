@@ -1,10 +1,11 @@
 ﻿using StockTrader.Domain.Models;
-using StockTrader.Domain.Services;
+using StockTrader.Domain.Services.Authentication;
+using StockTrader.Logger;
 using System;
 using System.Security;
 using System.Threading.Tasks;
 
-namespace StockTrader.API.Auth
+namespace StockTrader.API.Authentication
 {
     public class Authenticator : IAuthenticator
     {
@@ -73,7 +74,7 @@ namespace StockTrader.API.Auth
         /// <param name="accessLevel">The user's access level</param>
         /// <returns>The result of the registration.</returns>
         /// <exception cref="Exception">Thrown if the registration fails.</exception>
-        public async Task<RegistrationResult> Register(string email, string username, SecureString password, SecureString confirmPassword, AccessLevel accessLevel)
+        public async Task<RegistrationResult> Register(string email, string username, string password, string confirmPassword, AccessLevel accessLevel)
         {
             return await _authenticationService.Register(email, username, password, confirmPassword, accessLevel);
         }

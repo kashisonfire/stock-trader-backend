@@ -27,6 +27,7 @@ namespace StockTrader.API.Controllers
         public IEnumerable<object> Get()
         {
             var rng = new Random();
+            _logger.Write(LogLevel.Info, "we did it");
             return null;
         }
     }

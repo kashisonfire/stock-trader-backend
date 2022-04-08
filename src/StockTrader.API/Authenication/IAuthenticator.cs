@@ -1,10 +1,9 @@
 ﻿using StockTrader.Domain.Models;
-using StockTrader.Domain.Services;
 using System;
 using System.Security;
 using System.Threading.Tasks;
 
-namespace StockTrader.API.Auth
+namespace StockTrader.API.Authentication
 {
     public interface IAuthenticator
     {
@@ -33,7 +32,7 @@ namespace StockTrader.API.Auth
         /// <param name="accessLevel">The user's access level</param>
         /// <returns>The result of the registration.</returns>
         /// <exception cref="Exception">Thrown if the registration fails.</exception>
-        Task<RegistrationResult> Register(string email, string username, SecureString password, SecureString confirmPassword, AccessLevel accessLevel);
+        Task<RegistrationResult> Register(string email, string username, string password, string confirmPassword, AccessLevel accessLevel);
 
         /// <summary>
         /// Checks if the username is in our collection.

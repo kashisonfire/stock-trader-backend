@@ -17,7 +17,7 @@ namespace StockTrader.Domain.Services.Authentication
         /// <param name="accessLevel">The user's access level</param>
         /// <returns>The result of the registration.</returns>
         /// <exception cref="Exception">Thrown if the registration fails.</exception>
-        Task<RegistrationResult> Register(string email, string username, SecureString password, SecureString confirmPassword, AccessLevel accessLevel);
+        Task<RegistrationResult> Register(string email, string username, string password, string confirmPassword, AccessLevel accessLevel);
 
         /// <summary>
         /// Get an account for a user's credentials.

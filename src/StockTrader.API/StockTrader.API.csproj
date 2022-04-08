@@ -18,6 +18,7 @@
   <ItemGroup>
     <ProjectReference Include="..\StockTrader.Domain\StockTrader.Domain.csproj" />
     <ProjectReference Include="..\StockTrader.EntityFramework\StockTrader.EntityFramework.csproj" />
+    <ProjectReference Include="..\StockTrader.FinancialModelingPrepAPI\StockTrader.FinancialModelingPrepAPI.csproj" />
     <ProjectReference Include="..\StockTrader.Logger\StockTrader.Logger.csproj" />
   </ItemGroup>
 

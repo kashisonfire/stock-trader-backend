@@ -1,11 +1,11 @@
-﻿using SimpleTrader.Domain.Exceptions;
-using SimpleTrader.Domain.Models;
+﻿using StockTrader.Domain.Exceptions;
+using StockTrader.Domain.Models;
+using StockTrader.Domain.Services;
+using StockTrader.Domain.Services.Transaction;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace SimpleTrader.Domain.Services.TransactionServices
+namespace StockTrader.EntityFramework.Services.Transaction
 {
     public class BuyStockService : IBuyStockService
     {
@@ -29,7 +29,7 @@ namespace SimpleTrader.Domain.Services.TransactionServices
                 throw new InsufficientFundsException(buyer.Balance, transactionPrice);
             }
 
-            AssetTransaction transaction = new AssetTransaction()
+            AssetTransaction transaction = new()
             {
                 Account = buyer,
                 Asset = new Asset()

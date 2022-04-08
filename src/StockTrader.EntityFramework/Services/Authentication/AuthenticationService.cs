@@ -2,6 +2,7 @@
 using StockTrader.Domain.Models;
 using StockTrader.Domain.Services;
 using StockTrader.Domain.Services.Authentication;
+using StockTrader.Logger;
 using StockTrader.Utilities.PasswordHasher;
 using System;
 using System.Security;
@@ -14,12 +15,14 @@ namespace StockTrader.EntityFramework.Services.Authentication
     /// </summary>
     public class AuthenticationService : IAuthenticationService
     {
-        private readonly IDataService<User> _dataService;
+        private readonly ILogger _logger;
+        private readonly IAccountService _accountService;
         private readonly IPasswordHasher _passwordHasher;
 
-        public AuthenticationService(IDataService<User> dataService, IPasswordHasher passwordHasher)
+        public AuthenticationService(ILogger logger, IAccountService accountService, IPasswordHasher passwordHasher)
         {
-            _dataService = dataService;
+            _logger = logger;
+            _accountService = accountService;
             _passwordHasher = passwordHasher;
         }
 
@@ -34,16 +37,22 @@ namespace StockTrader.EntityFramework.Services.Authentication
         /// <exception cref="Exception">Thrown if the login fails.</exception>
         public async Task<User> Login(string usernameOrEmail, SecureString password)
         {
-            User storedUser = await _dataService.Get(e => e.Username == usernameOrEmail || e.Email == usernameOrEmail);
+            Account storedAccount = await _accountService.Get(e => e.AccountHolder.Username == usernameOrEmail || e.AccountHolder.Email == usernameOrEmail);
 
-            if (storedUser == null)
+            if (storedAccount == null)
             {
-                throw new UserNotFoundException(usernameOrEmail);
+                _logger.Error("Unable to find stored account", new UserNotFoundException(usernameOrEmail));
+                return null;
             }
 
-            bool passwordResult = storedUser.PasswordHash == _passwordHasher.SHA256Hash(storedUser.Username + _passwordHasher.SecureStringToString(password));
+            bool passwordResult = storedAccount.AccountHolder.PasswordHash == _passwordHasher.SHA256Hash(storedAccount.AccountHolder.Username + _passwordHasher.SecureStringToString(password));
 
-            return passwordResult ? storedUser : null;
+            if (passwordResult)
+            {
+                _logger.Info($"Username: {storedAccount.AccountHolder.Username} has logged in.");
+            }
+
+            return passwordResult ? storedAccount.AccountHolder : null;
         }
 
         /// <summary>
@@ -56,24 +65,24 @@ namespace StockTrader.EntityFramework.Services.Authentication
         /// <param name="accessLevel">The user's access level</param>
         /// <returns>The result of the registration.</returns>
         /// <exception cref="Exception">Thrown if the registration fails.</exception>
-        public async Task<RegistrationResult> Register(string email, string username, SecureString password, SecureString confirmPassword, AccessLevel accessLevel)
+        public async Task<RegistrationResult> Register(string email, string username, string password, string confirmPassword, AccessLevel accessLevel)
         {
             if (password != confirmPassword)
             {
                 return RegistrationResult.PasswordsDoNotMatch;
             }
-            if (await _dataService.Get(e => e.Email == email) != null)
+            if (await _accountService.Get(e => e.AccountHolder.Email == email) != null)
             {
                 return RegistrationResult.EmailAlreadyExists;
             }
-            if (await _dataService.Get(e => e.Username == username) != null)
+            if (await _accountService.Get(e => e.AccountHolder.Username == username) != null)
             {
                 return RegistrationResult.UsernameAlreadyExists;
             }
 
-            string hashedPassword = _passwordHasher.SHA256Hash(username + _passwordHasher.SecureStringToString(password));
+            string hashedPassword = _passwordHasher.SHA256Hash(username + password);
 
-            User user = new User()
+            User user = new()
             {
                 Email = email,
                 Username = username,
@@ -82,9 +91,13 @@ namespace StockTrader.EntityFramework.Services.Authentication
                 AccessLevel = accessLevel
             };
 
-            await _dataService.Add(user);
+            Account account = new()
+            {
+                AccountHolder = user,
+                Balance = 500
+            };
 
-            return RegistrationResult.Success;
+            return await _accountService.Add(account) != null ? RegistrationResult.Success : RegistrationResult.Fail;
         }
 
         /// <summary>
@@ -94,7 +107,7 @@ namespace StockTrader.EntityFramework.Services.Authentication
         /// <returns>True if valid</returns>
         public async Task<bool> ValidUser(string username)
         {
-            return await _dataService.Get(e => e.Username == username) != null;
+            return await _accountService.Get(e => e.AccountHolder.Username == username) != null;
         }
     }
 }

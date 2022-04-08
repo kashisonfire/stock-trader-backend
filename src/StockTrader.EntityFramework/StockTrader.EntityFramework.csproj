@@ -5,11 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Services\Transaction\BuyStockService.cs" />
-    <Compile Remove="Services\Transaction\SellStockService.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.15" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.15">
       <PrivateAssets>all</PrivateAssets>
@@ -21,10 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\StockTrader.Domain\StockTrader.Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Services\Transaction\" />
+    <ProjectReference Include="..\StockTrader.Logger\StockTrader.Logger.csproj" />
   </ItemGroup>
 
 </Project>

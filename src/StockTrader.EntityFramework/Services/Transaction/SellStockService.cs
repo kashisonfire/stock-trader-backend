@@ -1,12 +1,14 @@
-﻿using SimpleTrader.Domain.Exceptions;
-using SimpleTrader.Domain.Models;
+﻿using StockTrader.Domain.Exceptions;
+using StockTrader.Domain.Models;
+using StockTrader.Domain.Services;
+using StockTrader.Domain.Services.Transaction;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SimpleTrader.Domain.Services.TransactionServices
+namespace StockTrader.EntityFramework.Services.TransactionServices
 {
     public class SellStockService : ISellStockService
     {

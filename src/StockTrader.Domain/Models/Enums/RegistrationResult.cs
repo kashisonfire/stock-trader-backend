@@ -2,6 +2,7 @@
 {
     public enum RegistrationResult
     {
+        Fail,
         Success,
         PasswordsDoNotMatch,
         EmailAlreadyExists,
