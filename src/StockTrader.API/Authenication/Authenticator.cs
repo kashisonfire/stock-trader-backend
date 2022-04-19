@@ -19,12 +19,12 @@ namespace StockTrader.API.Authentication
         /// <summary>
         /// Current logged in user
         /// </summary>
-        public User CurrentUser { get; private set; }
+        public Account CurrentAccount { get; private set; }
 
         /// <summary>
         /// User currently logged in
         /// </summary>
-        public bool IsUserLoggedIn => CurrentUser != null;
+        public bool IsUserLoggedIn => CurrentAccount != null;
 
         /// <summary>
         /// User has logged in/out or registered
@@ -49,9 +49,9 @@ namespace StockTrader.API.Authentication
         /// <exception cref="UserNotFoundException">Thrown if the user does not exist.</exception>
         /// <exception cref="InvalidPasswordException">Thrown if the password is invalid.</exception>
         /// <exception cref="Exception">Thrown if the login fails.</exception>
-        public async Task Login(string username, SecureString password)
+        public async Task Login(string username, string password)
         {
-            CurrentUser = await _authenticationService.Login(username, password);
+            CurrentAccount = await _authenticationService.Login(username, password);
             StateChanged?.Invoke();
         }
 
@@ -60,7 +60,7 @@ namespace StockTrader.API.Authentication
         /// </summary>
         public void Logout()
         {
-            CurrentUser = null;
+            CurrentAccount = null;
             StateChanged?.Invoke();
         }
 

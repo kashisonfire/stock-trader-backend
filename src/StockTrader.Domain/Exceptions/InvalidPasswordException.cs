@@ -10,28 +10,28 @@ namespace StockTrader.Domain.Exceptions
         /// <summary>
         /// User's username
         /// </summary>
-        public string Username { get; set; }
+        public string UsernameOrEmail { get; set; }
 
         /// <summary>
         /// User's password
         /// </summary>
         public string Password { get; set; }
 
-        public InvalidPasswordException(string username, string password)
+        public InvalidPasswordException(string usernameOrEmail, string password)
         {
-            Username = username;
+            UsernameOrEmail = usernameOrEmail;
             Password = password;
         }
 
-        public InvalidPasswordException(string message, string username, string password) : base(message)
+        public InvalidPasswordException(string message, string usernameOrEmail, string password) : base(message)
         {
-            Username = username;
+            UsernameOrEmail = usernameOrEmail;
             Password = password;
         }
 
-        public InvalidPasswordException(string message, Exception innerException, string username, string password) : base(message, innerException)
+        public InvalidPasswordException(string message, Exception innerException, string usernameOrEmail, string password) : base(message, innerException)
         {
-            Username = username;
+            UsernameOrEmail = usernameOrEmail;
             Password = password;
         }
     }

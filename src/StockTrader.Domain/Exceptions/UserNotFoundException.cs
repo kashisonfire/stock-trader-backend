@@ -10,21 +10,21 @@ namespace StockTrader.Domain.Exceptions
         /// <summary>
         /// Username of the account
         /// </summary>
-        public string Username { get; set; }
+        public string UsernameOrEmail { get; set; }
 
-        public UserNotFoundException(string username)
+        public UserNotFoundException(string usernameOrEmail)
         {
-            Username = username;
+            UsernameOrEmail = usernameOrEmail;
         }
 
-        public UserNotFoundException(string message, string username) : base(message)
+        public UserNotFoundException(string message, string usernameOrEmail) : base(message)
         {
-            Username = username;
+            UsernameOrEmail = usernameOrEmail;
         }
 
-        public UserNotFoundException(string message, Exception innerException, string username) : base(message, innerException)
+        public UserNotFoundException(string message, Exception innerException, string usernameOrEmail) : base(message, innerException)
         {
-            Username = username;
+            UsernameOrEmail = usernameOrEmail;
         }
     }
 }

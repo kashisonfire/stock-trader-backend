@@ -16,7 +16,7 @@ namespace StockTrader.FinancialModelingPrepAPI
             _apiKey = apiKey.Key;
         }
 
-        public async Task<T> GetAsync<T>(string uri)
+        public virtual async Task<T> GetAsync<T>(string uri)
         {
             HttpResponseMessage response = await _client.GetAsync($"{uri}?apikey={_apiKey}");
             string jsonResponse = await response.Content.ReadAsStringAsync();

@@ -25,7 +25,7 @@ namespace StockTrader.EntityFramework.Services.TransactionServices
         {
             // Validate seller has sufficient shares.
             int accountShares = GetAccountSharesForSymbol(seller, symbol);
-            if(accountShares < shares)
+            if (accountShares < shares)
             {
                 throw new InsufficientSharesException(symbol, accountShares, shares);
             }

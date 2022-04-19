@@ -8,17 +8,26 @@ using System.Threading.Tasks;
 namespace StockTrader.API.Controllers
 {
     [ApiController]
-    public class AccountController : ControllerBase
+    public class AccountsController : ControllerBase
     {
         private readonly ILogger _logger;
         private readonly IAuthenticator _authenticator;
         private readonly IAccountService _accountService;
 
-        public AccountController(ILogger logger, IAuthenticator authenticator, IAccountService accountService)
+        public AccountsController(
+            ILogger logger,
+            IAuthenticator authenticator,
+            IAccountService accountService)
         {
             _logger = logger;
             _authenticator = authenticator;
             _accountService = accountService;
+        }
+
+        [HttpGet("account/current")]
+        public Account GetCurrentAccount()
+        {
+            return _authenticator.CurrentAccount;
         }
 
         [HttpGet("account/id/{id}")]
@@ -39,10 +48,28 @@ namespace StockTrader.API.Controllers
             return await _accountService.GetByEmail(email);
         }
 
-        [HttpPost("account/create")]
-        public async Task<RegistrationResult> CreateAccountAsync(string email, string username, string password, string confirmPassword, AccessLevel accessLevel)
+        [HttpPost("account/login")]
+        public async Task<Account> LoginAsync(string usernameOrEmail, string password)
         {
-            RegistrationResult result = await _authenticator.Register(email, username, password, confirmPassword, accessLevel);
+            await _authenticator.Login(
+                usernameOrEmail,
+                password);
+            return _authenticator.CurrentAccount;
+        }
+
+        [HttpPost("account/register")]
+        public async Task<RegistrationResult> RegisterAsync(
+            string email,
+            string username,
+            string password,
+            string confirmPassword,
+            AccessLevel accessLevel)
+        {
+            RegistrationResult result = await _authenticator.Register(
+                email,
+                username,
+                password,
+                confirmPassword, accessLevel);
 
             if (result != RegistrationResult.Success)
             {

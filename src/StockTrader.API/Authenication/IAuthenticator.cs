@@ -10,7 +10,7 @@ namespace StockTrader.API.Authentication
         /// <summary>
         /// Current logged in user
         /// </summary>
-        User CurrentUser { get; }
+        Account CurrentAccount { get; }
 
         /// <summary>
         /// User currently logged in
@@ -49,7 +49,7 @@ namespace StockTrader.API.Authentication
         /// <exception cref="UserNotFoundException">Thrown if the user does not exist.</exception>
         /// <exception cref="InvalidPasswordException">Thrown if the password is invalid.</exception>
         /// <exception cref="Exception">Thrown if the login fails.</exception>
-        Task Login(string username, SecureString password);
+        Task Login(string username, string password);
 
         /// <summary>
         /// Logs current user out

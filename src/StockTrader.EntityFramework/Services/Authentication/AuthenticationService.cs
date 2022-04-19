@@ -31,28 +31,30 @@ namespace StockTrader.EntityFramework.Services.Authentication
         /// </summary>
         /// <param name="usernameOrEmail">The username or email.</param>
         /// <param name="password">The user's password.</param>
-        /// <returns>The account for the user.</returns>
+        /// <returns>The account.</returns>
         /// <exception cref="UserNotFoundException">Thrown if the user does not exist.</exception>
         /// <exception cref="InvalidPasswordException">Thrown if the password is invalid.</exception>
         /// <exception cref="Exception">Thrown if the login fails.</exception>
-        public async Task<User> Login(string usernameOrEmail, SecureString password)
+        public async Task<Account> Login(string usernameOrEmail, string password)
         {
             Account storedAccount = await _accountService.Get(e => e.AccountHolder.Username == usernameOrEmail || e.AccountHolder.Email == usernameOrEmail);
 
             if (storedAccount == null)
             {
-                _logger.Error("Unable to find stored account", new UserNotFoundException(usernameOrEmail));
-                return null;
+                throw new UserNotFoundException(usernameOrEmail);
             }
-
-            bool passwordResult = storedAccount.AccountHolder.PasswordHash == _passwordHasher.SHA256Hash(storedAccount.AccountHolder.Username + _passwordHasher.SecureStringToString(password));
+            bool passwordResult = storedAccount.AccountHolder.PasswordHash == _passwordHasher.SHA256Hash(storedAccount.AccountHolder.Username + password);
 
             if (passwordResult)
             {
                 _logger.Info($"Username: {storedAccount.AccountHolder.Username} has logged in.");
             }
+            else
+            {
+                throw new InvalidPasswordException(usernameOrEmail, password);
+            }
 
-            return passwordResult ? storedAccount.AccountHolder : null;
+            return storedAccount;
         }
 
         /// <summary>
